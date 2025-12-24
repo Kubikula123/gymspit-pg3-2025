@@ -205,7 +205,7 @@ AddUser("08mishi", users, ref userCount);
 AddPost("hello", "wormik", users, posts, postAuthors, ref postCount);
 foreach (var x in GetUserPosts("wormik", posts, postAuthors, postCount))
     Console.WriteLine(x);
-AddFollow("08mishi", "wormik", followers, followees, ref followCount);
+AddFollow("08mishi", "wormik", followers, followees, ref followCount); 
 AddFollow("wormik", "kubikula123", followers, followees, ref followCount);
 RemoveFollow("08mishi", "wormik", followers, followees, ref followCount);
 foreach (var y in GetUserFollows("wormik", followers, followees, followCount))
