@@ -74,37 +74,109 @@ static void AddPost(string post, string author, string[] posts, string[] postAut
     }
     if (AddValue(post, posts, postCount))
     {
+        postAuthors[postCount] = author;
         postCount += 1;
     }
 }
 
 static string[] GetUserPosts(string user, string[] posts, string[] postAuthors, int postCount)
 {
-    // TODO
-    return new string[] { };
+    string[] userPosts = new string[postCount];
+    int count = 0;
+
+    for (int i = 0; i < postCount; i++)
+    {
+        if (postAuthors[i] == user)
+        {
+            userPosts[count++] = posts[i];
+        }
+    }
+
+    Array.Resize(ref userPosts, count);
+    return userPosts;
 }
 
 
 static void AddFollow(string follower, string followee, string[] followers, string[] followees, ref int followCount)
 {
-    // TODO
+    if (follower == followee)
+    {
+        Console.WriteLine("User cannot follow itself");
+        return;
+    }
+    int followerIndex = Array.IndexOf(followers, follower);
+    int followeeIndex = Array.IndexOf(followees, followee);
+    if (followerIndex >= 0)
+    {
+        Console.WriteLine("You are already following this user");
+        return;
+    }
+    followers[followCount] = follower;
+    followees[followCount] = followee;
+    followCount++;
+    return;
 }
 
 static void RemoveFollow(string follower, string followee, string[] followers, string[] followees, ref int followCount)
 {
-    // TODO
+    if (follower == followee)
+    {
+        Console.WriteLine("User cannot unfollow itself");
+        return;
+    }
+    for (int i = 0; i < followCount; i++)
+    {
+        if (followers[i] == follower && followees[i] == followee)
+        {
+            for (int j = i; j < followCount - 1; j++)
+            {
+                followers[j] = followers[j + 1];
+                followees[j] = followees[j + 1];
+            }
+            followCount--;
+            return;
+        }
+    }
+    Console.WriteLine("You aren't following this user");
 }
 
 static string[] GetUserFollows(string user, string[] followers, string[] followees, int followCount)
 {
-    // TODO
-    return new string[] { };
+    string[] result = new string[followCount];
+    int count = 0;
+
+    for (int i = 0; i < followCount; i++)
+    {
+        if (followers[i] == user)
+        {
+            result[count++] = followees[i];
+        }
+    }
+
+    Array.Resize(ref result, count);
+    return result;
 }
 
 static string[] GetUserFollowers(string user, string[] followers, string[] followees, int followCount)
 {
-    // TODO
-    return new string[] { };
+    int index = Array.IndexOf(followees, user);
+    if (index < 0)
+    {
+        Console.WriteLine("Nobody follows this user.");
+    }
+    string[] userIsFollowed = new string[followCount];
+    for (int i = 0; i < followCount;)
+    {
+        for (int j = 0; j < followCount; j++)
+        {
+            if (followees[j] == user)
+            {
+                userIsFollowed[i] = followers[j];
+                i++;
+            }
+        }
+    }
+    return userIsFollowed;
 }
 
 
@@ -132,3 +204,12 @@ string[] followees = new string[MAX_FOLLOWS];
 int followCount = 0;
 
 AddUser("wormik", users, ref userCount);
+AddUser("kubikula123", users, ref userCount);
+AddPost("hello", "wormik", posts, users, ref postCount);
+GetUserPosts("wormik", posts, postAuthors, postCount);
+AddFollow("kubikula123", "wormik", followers, followees, ref followCount);
+AddFollow("wormik", "kubikula123", followers, followees, ref followCount);
+RemoveFollow("mishi", "wormik", followers, followees, ref followCount);
+GetUserFollows("wormik", followers, followees, followCount);
+GetUserFollows("kubikula123", followers, followees, followCount);
+GetUserFollowers("wormik", followers, followees, followCount);
