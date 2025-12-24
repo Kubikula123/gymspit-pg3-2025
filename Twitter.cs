@@ -58,10 +58,10 @@ static void RemoveUser(string username, string[] users, ref int userCount)
 }
 
 
-static void AddPost(string post, string author, string[] posts, string[] postAuthors, ref int postCount)
+static void AddPost(string post, string author, string[] users, string[] posts, string[] postAuthors, ref int postCount)
 {
     int index = Array.IndexOf(posts, post);
-    int index2 = Array.IndexOf(postAuthors, author);
+    int index2 = Array.IndexOf(users, author);
     if (index >= 0)
     {
         Console.WriteLine("Post already exists.");
@@ -81,19 +81,19 @@ static void AddPost(string post, string author, string[] posts, string[] postAut
 
 static string[] GetUserPosts(string user, string[] posts, string[] postAuthors, int postCount)
 {
-    string[] userPosts = new string[postCount];
+    string[] result = new string[postCount];
     int count = 0;
 
     for (int i = 0; i < postCount; i++)
     {
         if (postAuthors[i] == user)
         {
-            userPosts[count++] = posts[i];
+            result[count++] = posts[i];
         }
     }
 
-    Array.Resize(ref userPosts, count);
-    return userPosts;
+    Array.Resize(ref result, count);
+    return result;
 }
 
 
@@ -104,12 +104,13 @@ static void AddFollow(string follower, string followee, string[] followers, stri
         Console.WriteLine("User cannot follow itself");
         return;
     }
-    int followerIndex = Array.IndexOf(followers, follower);
-    int followeeIndex = Array.IndexOf(followees, followee);
-    if (followerIndex >= 0)
+    for (int i = 0; i < followCount; i++)
     {
-        Console.WriteLine("You are already following this user");
-        return;
+        if (followers[i] == follower && followees[i] == followee)
+        {
+            Console.WriteLine("Already following this user.");
+            return;
+        }
     }
     followers[followCount] = follower;
     followees[followCount] = followee;
@@ -159,24 +160,19 @@ static string[] GetUserFollows(string user, string[] followers, string[] followe
 
 static string[] GetUserFollowers(string user, string[] followers, string[] followees, int followCount)
 {
-    int index = Array.IndexOf(followees, user);
-    if (index < 0)
+    string[] result = new string[followCount];
+    int count = 0;
+
+    for (int i = 0; i < followCount; i++)
     {
-        Console.WriteLine("Nobody follows this user.");
-    }
-    string[] userIsFollowed = new string[followCount];
-    for (int i = 0; i < followCount;)
-    {
-        for (int j = 0; j < followCount; j++)
+        if (followees[i] == user)
         {
-            if (followees[j] == user)
-            {
-                userIsFollowed[i] = followers[j];
-                i++;
-            }
+            result[count++] = followers[i];
         }
     }
-    return userIsFollowed;
+
+    Array.Resize(ref result, count);
+    return result;
 }
 
 
@@ -205,11 +201,16 @@ int followCount = 0;
 
 AddUser("wormik", users, ref userCount);
 AddUser("kubikula123", users, ref userCount);
-AddPost("hello", "wormik", posts, users, ref postCount);
-GetUserPosts("wormik", posts, postAuthors, postCount);
-AddFollow("kubikula123", "wormik", followers, followees, ref followCount);
+AddUser("08mishi", users, ref userCount);
+AddPost("hello", "wormik", users, posts, postAuthors, ref postCount);
+foreach (var x in GetUserPosts("wormik", posts, postAuthors, postCount))
+    Console.WriteLine(x);
+AddFollow("08mishi", "wormik", followers, followees, ref followCount);
 AddFollow("wormik", "kubikula123", followers, followees, ref followCount);
-RemoveFollow("mishi", "wormik", followers, followees, ref followCount);
-GetUserFollows("wormik", followers, followees, followCount);
-GetUserFollows("kubikula123", followers, followees, followCount);
+RemoveFollow("08mishi", "wormik", followers, followees, ref followCount);
+foreach (var y in GetUserFollows("wormik", followers, followees, followCount))
+    Console.WriteLine(y);
+
+foreach (var z in GetUserFollowers("kubikula123", followers, followees, followCount))
+    Console.WriteLine(z);
 GetUserFollowers("wormik", followers, followees, followCount);
