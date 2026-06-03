@@ -18,6 +18,7 @@ namespace Lecture18
             string[] choices = new string[] {
                 TURN_CHOICE_ATTACK,
                 TURN_CHOICE_ATTACK,
+                TURN_CHOICE_ATTACK,
                 TURN_CHOICE_WAIT,
             };
 
