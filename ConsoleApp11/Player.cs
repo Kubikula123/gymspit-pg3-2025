@@ -3,7 +3,6 @@ using System.IO;
 
 namespace Lecture18
 {
-    // 1. Create an enum to represent the chosen class
     public enum HeroClass
     {
         Fighter,
@@ -16,10 +15,8 @@ namespace Lecture18
         private TextReader input;
         private TextWriter? prompt;
 
-        // Property to hold the player's class
         public HeroClass CharacterClass { get; private set; }
 
-        // Updated constructor to accept the HeroClass
         public Player(string name, int maxHitPoints, int attack, int defense, HeroClass characterClass, TextReader input, TextWriter? prompt = null) :
             base(name, maxHitPoints, attack, defense)
         {
@@ -81,7 +78,6 @@ namespace Lecture18
             }
         }
 
-        // 2. Override TakeTurn to intercept the spell choices
         public override void TakeTurn(TextWriter output, Character enemy, Die die)
         {
             string action = ChooseAction();
@@ -89,7 +85,6 @@ namespace Lecture18
             switch (action)
             {
                 case TURN_CHOICE_ATTACK:
-                    // Add flavor text based on the class before calling the standard attack
                     if (CharacterClass == HeroClass.Fighter) output.WriteLine("\n{0} charges forward for a fierce Weapon Attack!", Name);
                     else if (CharacterClass == HeroClass.Ranger) output.WriteLine("\n{0} takes aim and unleashes an Arrow Shooting attack!", Name);
                     else if (CharacterClass == HeroClass.Wizard) output.WriteLine("\n{0} swings their magical staff!", Name);
@@ -114,8 +109,6 @@ namespace Lecture18
                     break;
             }
         }
-
-        // --- SPELL LOGIC ---
 
         private void CastFireball(TextWriter output, Character enemy)
         {
