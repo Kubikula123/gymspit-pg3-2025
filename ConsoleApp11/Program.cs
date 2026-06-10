@@ -20,7 +20,6 @@ namespace Lecture18
                 playerName = "Tav"; 
             }
 
-            // 2. Class Selection Menu
             Console.WriteLine("\nChoose your starting class:");
             Console.WriteLine("1. Fighter (High HP, High Armor, Medium Attack)");
             Console.WriteLine("2. Ranger  (Medium HP, Medium Armor, High Attack)");
