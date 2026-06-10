@@ -34,7 +34,6 @@ namespace Lecture18
                     prompt.WriteLine("\n--- Your Turn ---");
                     prompt.WriteLine("Choose an action:");
 
-                    // Show different flavor text and options based on class
                     if (CharacterClass == HeroClass.Fighter)
                     {
                         prompt.WriteLine("(A)ttack - Weapon Attack (+{0} to hit)", Attack);
@@ -60,11 +59,9 @@ namespace Lecture18
 
                 string choice = choiceRaw.Trim().ToLower();
 
-                // Standard universal actions
                 if (choice == "a" || choice == "attack") return TURN_CHOICE_ATTACK;
                 if (choice == "w" || choice == "wait") return TURN_CHOICE_WAIT;
 
-                // Wizard-specific actions
                 if (CharacterClass == HeroClass.Wizard)
                 {
                     if (choice == "f" || choice == "fireball") return "fireball";
@@ -117,7 +114,6 @@ namespace Lecture18
             Random rng = new Random();
             int d20Roll = rng.Next(1, 21);
 
-            // Fireball is a powerful spell: +2 bonus to hit and double base damage
             int totalAttack = d20Roll + Attack + 2;
 
             if (totalAttack >= enemy.Defense)
@@ -137,7 +133,6 @@ namespace Lecture18
             output.WriteLine("\n{0} casts MAGIC MISSILE! Three glowing darts shoot toward {1}!", Name, enemy.Name);
             output.WriteLine("Magic Missile never misses!");
 
-            // Magic Missile skips the d20 roll completely and deals fixed damage
             int damage = 12;
             enemy.ReceiveDamage(output, damage);
         }
