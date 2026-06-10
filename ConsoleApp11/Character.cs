@@ -57,11 +57,8 @@ namespace Lecture18
             }
         }
 
-        // --- NEW BG3 / d20 COMBAT SYSTEM ---
         protected void AttackEnemy(TextWriter output, Character enemy, Die die)
         {
-            // We use a local Random here to guarantee a 1-20 roll, 
-            // regardless of how your existing 'Die' class is set up.
             Random rng = new Random();
             int d20Roll = rng.Next(1, 21);
 
@@ -75,20 +72,17 @@ namespace Lecture18
             {
                 output.WriteLine("CRITICAL HIT! {0} strikes a devastating blow!", name);
 
-                // For a critical hit, we double the base attack damage
                 int critDamage = attack * 2;
                 enemy.ReceiveDamage(output, critDamage);
             }
             else
             {
-                // Standard hit check: d20 roll + attack modifier vs enemy's static defense (Armor)
                 int totalAttack = d20Roll + attack;
 
-                if (totalAttack >= enemy.Defense) // "Meets it, beats it" rule
+                if (totalAttack >= enemy.Defense) 
                 {
                     output.WriteLine("Hit! (Roll: {0} + Mod: {1} = {2} vs Armor: {3})", d20Roll, attack, totalAttack, enemy.Defense);
 
-                    // Normal damage based on the attack stat
                     enemy.ReceiveDamage(output, attack);
                 }
                 else
@@ -99,7 +93,6 @@ namespace Lecture18
             }
         }
 
-        // Renamed from ReceiveAttack to ReceiveDamage, as the hit/miss logic is now fully handled above
         public void ReceiveDamage(TextWriter output, int damage)
         {
             if (damage > 0)
@@ -112,7 +105,6 @@ namespace Lecture18
                 output.WriteLine("{0} takes no damage!", name);
             }
         }
-        // ------------------------------------
 
         private void Wait(TextWriter output, Die die)
         {
